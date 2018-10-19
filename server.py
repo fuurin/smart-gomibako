@@ -10,7 +10,7 @@ import json
 DEBUG = True
 CONFIG_FILE = 'config.json'
 COLLECTION_FILE = 'collection.json'
-GOMIBAKO_THRESHOLD = 4
+GOMIBAKO_THRESHOLD = 3
 
 app = Flask(__name__)
 

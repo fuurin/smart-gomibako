@@ -1,4 +1,4 @@
 import random
 
 def get_amount():
-    return random.randint(0, 5)
+    return random.randint(0, 4)

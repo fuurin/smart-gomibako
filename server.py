@@ -8,7 +8,7 @@ CONFIG_FILE = 'config.json'
 COLLECTION_FILE = 'collection.json'
 INITIAL_CONFIG = {
     'name': '',
-    'collection': {}
+    'collection': ''
 }
 
 app = Flask(__name__)
@@ -92,6 +92,11 @@ def collection_day():
                 result = [c for c in result if c ['kana2'] == kana2]
     elif juusho:
         result = search_juusho(collection, juusho)
+    else:
+        with open(CONFIG_FILE) as conf:
+            data = json.load(conf)
+        if data['collection']:
+            result = search_id(collection, data['collection'])
     
     response = jsonify(result)
     response.status_code = 200

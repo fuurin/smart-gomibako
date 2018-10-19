@@ -29,6 +29,10 @@ $ python server.py
     - kanbin: 缶，ビン
     - kamirui: 紙類
 - collction: 収集地域ID
+- notify_for_today: "1"の時，当日がゴミ捨ての日ならば通知する
+- notify_for_tomorrow: "1"の時，翌日がゴミ捨ての日ならば通知する
+- notification_time_for_today: 当日ゴミ捨ての通知を行う時間を設定する．例： "07:00"
+- notification_time_for_tomorrow: 翌日ゴミ捨ての通知を行う時間を設定する1．例： "19:00"
 
 *2: 以下のように検索を行う
 - idを指定： idが指定したidに一致する地域のゴミ収集日情報(*3)を返す
@@ -50,4 +54,4 @@ $ python server.py
 - kanbin: カン，ビンの収集日,
 - kamirui: 紙類の収集日
 
-*4: カテゴリか収集日が設定されていなければnullを返す．configも同時に返す．
+*4: configも同時に返す．カテゴリか収集日が設定されていなければnullを返す．

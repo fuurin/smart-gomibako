@@ -3,11 +3,17 @@ import json, os
 INITIAL_CONFIG = {
     'name': '',
     'category': '',
-    'collection': ''
+    'collection': '',
+    'notify_for_today': '',
+    'notify_for_tomorrow': '',
+    'notification_time_for_today': '',
+    'notification_time_for_tomorrow': ''
 }
 
 def set_config(config, form):
-    result = {'name': 'keep', 'category': 'keep', 'collection': 'keep'}
+    result = INITIAL_CONFIG.copy()
+    for key in result: 
+        result[key]='keep'
     for item in result:
         if item in form: 
             result[item] = 'changed'

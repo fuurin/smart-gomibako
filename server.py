@@ -4,11 +4,13 @@ from config import init_config, set_config
 from collection_day_crawler import init_collection
 from collection_searcher import search_collection
 from collection_day_checker import nowIsCollectionDay, tomorrowIsCollectionDay
+from notification import notify_for_today, notify_for_tomorrow
 import json
 
 DEBUG = True
 CONFIG_FILE = 'config.json'
 COLLECTION_FILE = 'collection.json'
+GOMIBAKO_THRESHOLD = 4
 
 app = Flask(__name__)
 
@@ -83,6 +85,14 @@ def tomorrow_is_collection_day():
 
     response.status_code = 200
     return response
+
+@app.route('/notify')
+def notify():
+    if get_amount() >= GOMIBAKO_THRESHOLD:
+        if today_is_collection_day():
+            notify_for_today()
+        if tomorrow_is_collection_day():
+            notify_for_tomorrow()
 
 if __name__ == '__main__':
     app.debug = DEBUG

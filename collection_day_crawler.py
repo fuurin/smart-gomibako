@@ -1,6 +1,6 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import json
+import json, os
 
 urls = [
     ['http://www.city.sendai.jp/haiki-shido/kurashi/machi/genryo/gomi/yobi/ichiran-a.html', '青葉区'],
@@ -18,10 +18,11 @@ def crawl():
         responseHtml = urlopen(url[0])
         bs = BeautifulSoup(responseHtml, 'html.parser')
         datatables = bs.find_all('table', attrs={"class": "datatable"})
-        for datatable in datatables:
+        for datatable_id, datatable in enumerate(datatables):
+            if datatable_id == 0: continue
             rows = datatable.find_all('tr')
-            for index, row in enumerate(rows):
-                if index < 3: continue
+            for row_id, row in enumerate(rows):
+                if row_id == 0: continue
                 data = row.find_all('td')
                 kanas = data[0].find('a').text if data[0].find('a') else data[0].text
                 town_result = {
@@ -34,12 +35,16 @@ def crawl():
                     'kanbin': data[4].text,
                     'kamirui': data[5].text
                 }
-                id += 1
                 ward_result.append(town_result)
+                id += 1
         result[url[1]] = ward_result
 
     with open('collection.json', 'w') as collection:
         json.dump(result, collection, ensure_ascii=False)
+
+def init_collection(collection_file):
+    if not os.path.exists(collection_file):
+        crawl()
 
 if __name__ == '__main__':
     crawl()

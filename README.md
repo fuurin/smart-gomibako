@@ -1,16 +1,34 @@
 # ゴミ収集日(仙台市限定)検索機能付きゴミ箱API
 
+## 導入
+``` bash
+$ python -m venv smart-gomibako
+$ cd smart-gomibako
+$ source bin/activate
+$ git clone https://github.com/fuurin/smart-gomibako
+$ pip install -r requirements.txt
+$ python server.py
+```
+
 ## API仕様
 
 |エンドポイント|メソッド|パラメータ|説明|
 |:--|:--|:--|:--|
 |/amount|GET|なし|現在のゴミの量を取得．0~5の6段階|
 |/config|GET|なし|現在の設定ファイル(*1)の状態を取得する|
-|/config|POST|name,collection|現在の設定ファイルの状態を変更する|
+|/config|POST|name,category,collection|現在の設定ファイルの状態を変更する|
 |/collection|GET|id,ku,kana1,kana2,juusho|地域を検索し，ゴミ収集日の検索結果(*2)を返す|
+|/today|GET|なし|設定ファイルのカテゴリと収集地域IDから今日が収集日かを返す．(*4)|
+|/tomorrow|GET|なし|設定ファイルのカテゴリと収集地域IDから明日が収集日かを返す．(*4)|
 
-
-*1: 設定ファイルには，名前(name)と収集地域ID(collection)が含まれる
+*1: 設定ファイルには，以下の3つがが含まれる
+- name: ゴミ箱につける名前
+- category: ゴミ箱のカテゴリ．以下の4つのいずれかを指定する
+    - katei: 家庭ゴミ
+    - pura: プラゴミ
+    - kanbin: 缶，ビン
+    - kamirui: 紙類
+- collction: 収集地域ID
 
 *2: 以下のように検索を行う
 - idを指定： idが指定したidに一致する地域のゴミ収集日情報(*3)を返す
@@ -31,3 +49,5 @@
 - pura: プラゴミの収集日,
 - kanbin: カン，ビンの収集日,
 - kamirui: 紙類の収集日
+
+*4: カテゴリか収集日が設定されていなければnullを返す．configも同時に返す．

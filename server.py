@@ -29,7 +29,7 @@ def config():
     return response
 
 @app.route('/config/name', methods=['GET', 'POST'])
-def set_name(): 
+def name(): 
     with open(CONFIG_FILE, 'r') as conf:
         data = json.load(conf)
     
@@ -45,7 +45,7 @@ def set_name():
     return response
 
 @app.route('/config/collection', methods=['GET', 'POST'])
-def set_collection(): 
+def collection(): 
     with open(CONFIG_FILE, 'r') as conf:
         data = json.load(conf)
     

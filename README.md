@@ -16,13 +16,13 @@ $ python server.py
 |:--|:--|:--|:--|
 |/amount|GET|なし|現在のゴミの量を取得．0~4の5段階|
 |/config|GET|なし|現在の設定ファイル(*1)の状態を取得する|
-|/config|POST|name,category,collection|現在の設定ファイルの状態を変更する|
+|/config|POST|name,category,collection,notify_for_today,notify_for_tomorrow,notification_time_for_today,notification_time_for_tomorrow|現在の設定ファイルの状態を変更する|
 |/collection|GET|id,ku,kana1,kana2,juusho|地域を検索し，ゴミ収集日の検索結果(*2)を返す|
 |/today|GET|なし|設定ファイルのカテゴリと収集地域IDから今日が収集日かを返す．(*4)|
 |/tomorrow|GET|なし|設定ファイルのカテゴリと収集地域IDから明日が収集日かを返す．(*4)|
 |/notify|GET|なし|条件(*5)を満たしている場合，プッシュ通知を行う
 
-*1: 設定ファイルには，以下の3つがが含まれる
+*1: 設定ファイルには，以下に示すものが含まれる
 - name: ゴミ箱につける名前
 - category: ゴミ箱のカテゴリ．以下の4つのいずれかを指定する
     - katei: 家庭ゴミ

@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from pushbullet import PushBullet
 from amount import get_amount
 from config import init_config, set_config
 from collection_day_crawler import init_collection
@@ -11,8 +12,10 @@ DEBUG = True
 CONFIG_FILE = 'config.json'
 COLLECTION_FILE = 'collection.json'
 GOMIBAKO_THRESHOLD = 3
+PUSH_BULLET_API_KEY = 'o.A6M2BYXP7qormGRA9b0tMKYAq47mt8sc'
 
 app = Flask(__name__)
+pb = PushBullet(PUSH_BULLET_API_KEY)
 
 @app.route('/')
 def index():
@@ -88,11 +91,23 @@ def tomorrow_is_collection_day():
 
 @app.route('/notify')
 def notify():
-    if get_amount() >= GOMIBAKO_THRESHOLD:
-        if today_is_collection_day():
-            notify_for_today()
-        if tomorrow_is_collection_day():
-            notify_for_tomorrow()
+    with open(COLLECTION_FILE) as collection_json:
+        collection = json.load(collection_json)
+    with open(CONFIG_FILE) as config_json:
+        config = json.load(config_json)
+
+    amount = get_amount()
+    response = jsonify({'result': 'no notification'})
+    if amount >= GOMIBAKO_THRESHOLD:
+        if nowIsCollectionDay(collection, config):
+            message = notify_for_today(pb)
+            response = jsonify({'result': message, 'amount': amount})
+        if tomorrowIsCollectionDay(collection, config):
+            message = notify_for_tomorrow(pb)
+            response = jsonify({'result': message, 'amount': amount})
+    
+    response.status_code = 200
+    return response
 
 if __name__ == '__main__':
     app.debug = DEBUG
